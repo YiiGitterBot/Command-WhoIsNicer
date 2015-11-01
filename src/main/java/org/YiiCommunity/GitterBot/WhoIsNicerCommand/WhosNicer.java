@@ -7,15 +7,33 @@ import org.YiiCommunity.GitterBot.api.Command;
 import org.YiiCommunity.GitterBot.containers.Gitter;
 import org.YiiCommunity.GitterBot.models.database.User;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class WhosNicer extends Command {
+
+    private List<String> commands = new ArrayList<>();
+
+    public WhosNicer() {
+        commands = getConfig().getStringList("commands");
+    }
+
     @Override
     public void onMessage(MessageResponse message) {
-        if (message.text.contains("@" + GitterBot.getInstance().getConfiguration().getBotUsername() + " кто на свете всех милее")) {
-            User obj = Ebean.find(User.class).order().desc("carma").setMaxRows(1).findUnique();
-            try {
-                Gitter.sendMessage("Нынче на престоле @" + obj.getUsername());
-            } catch (Exception e) {
-                e.printStackTrace();
+        for (String item : commands) {
+            if (message.text.trim().equalsIgnoreCase("@" + GitterBot.getInstance().getConfiguration().getBotUsername() + " " + item)) {
+                User obj = Ebean.find(User.class).order().desc("carma").setMaxRows(1).findUnique();
+                try {
+                    Gitter.sendMessage(
+                            getConfig()
+                                    .getString("response", "Today's the best is @{username} with **{carma}** carma!")
+                                    .replace("{username}", obj.getUsername())
+                                    .replace("{carma}", (obj.getCarma() >= 0 ? "+" : "-") + obj.getCarma())
+                    );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return;
             }
         }
     }

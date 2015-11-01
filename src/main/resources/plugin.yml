@@ -1,0 +1,3 @@
+commands:
+    - who is the best
+response: "Today's the best is @{username} with **{carma}** carma!"
