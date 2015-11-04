@@ -1,6 +1,7 @@
 package org.YiiCommunity.GitterBot.WhoIsNicerCommand;
 
 import com.amatkivskiy.gitter.rx.sdk.model.response.message.MessageResponse;
+import com.amatkivskiy.gitter.rx.sdk.model.response.room.RoomResponse;
 import com.avaje.ebean.Ebean;
 import org.YiiCommunity.GitterBot.GitterBot;
 import org.YiiCommunity.GitterBot.api.Command;
@@ -19,12 +20,12 @@ public class WhosNicer extends Command {
     }
 
     @Override
-    public void onMessage(MessageResponse message) {
+    public void onMessage(RoomResponse room, MessageResponse message) {
         for (String item : commands) {
             if (message.text.trim().equalsIgnoreCase("@" + GitterBot.getInstance().getConfiguration().getBotUsername() + " " + item)) {
                 User obj = Ebean.find(User.class).order().desc("carma").setMaxRows(1).findUnique();
                 try {
-                    Gitter.sendMessage(
+                    Gitter.sendMessage(room,
                             getConfig()
                                     .getString("response", "Today's the best is @{username} with **{carma}** carma!")
                                     .replace("{username}", obj.getUsername())
