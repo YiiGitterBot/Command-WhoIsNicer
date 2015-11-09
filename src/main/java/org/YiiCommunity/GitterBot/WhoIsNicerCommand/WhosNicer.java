@@ -23,7 +23,7 @@ public class WhosNicer extends Command {
     public void onMessage(RoomResponse room, MessageResponse message) {
         for (String item : commands) {
             if (message.text.trim().equalsIgnoreCase("@" + GitterBot.getInstance().getConfiguration().getBotUsername() + " " + item)) {
-                User obj = Ebean.find(User.class).order().desc("carma").setMaxRows(1).findUnique();
+                User obj = Ebean.find(User.class).where().ne("username", GitterBot.getInstance().getConfiguration().getBotUsername()).order().desc("carma").setMaxRows(1).findUnique();
                 try {
                     Gitter.sendMessage(room,
                             getConfig()
