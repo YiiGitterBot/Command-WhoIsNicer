@@ -1,7 +1,7 @@
 package org.YiiCommunity.GitterBot.WhoIsNicerCommand;
 
-import com.amatkivskiy.gitter.rx.sdk.model.response.message.MessageResponse;
-import com.amatkivskiy.gitter.rx.sdk.model.response.room.RoomResponse;
+import com.amatkivskiy.gitter.sdk.model.response.message.MessageResponse;
+import com.amatkivskiy.gitter.sdk.model.response.room.RoomResponse;
 import com.avaje.ebean.Ebean;
 import org.YiiCommunity.GitterBot.GitterBot;
 import org.YiiCommunity.GitterBot.api.Command;
